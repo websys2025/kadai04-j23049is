@@ -49,8 +49,10 @@
                         console.log("商品番号: "+this.id+", 商品名: "+this.name+"を購入します。");
                         // 課題4-2. ここにコードを書く
                         // 購入による商品の在庫削減処理
-                        
+                        this.stock--;
+                        console.log("残りは" + this.stock + "個です。");                        
                         // 課題4-3. ここにコードを書く
+                        
                         // 在庫用のエレメントを抽出し、HTML内の個数を更新
                     } else console.log(this.name+"は商品の在庫がないため購入できません。");
                 }
@@ -71,14 +73,30 @@
             }
             // 課題4-2. ここにコードを書く
             // 商品表の作成
+            for (let i = 0; i < item_list.length; i++) {
+                const row = itemArea.insertRow(); // 新しい行を作成
+                row.insertCell().innerText = item_list[i]["name"]; // 商品名セル
+                row.insertCell().innerText = item_list[i]["price"] + "円"; // 金額セル
 
+                // 在庫数セルを作成し、IDを付与（課題4-3でHTMLを更新するために必要）
+                const stockCell = row.insertCell();
+                stockCell.id = "stock-" + item_list[i]["id"]; 
+                stockCell.innerText = item_list[i]["stock"] + "個"; 
+
+                // 購入ボタンを含むセルを作成し、ボタンにもIDを付与（課題4-3でイベントを設定するために必要）
+                const buyCell = row.insertCell();
+                const buyButton = document.createElement("button");
+                buyButton.id = "button" + item_list[i]["id"]; 
+                buyButton.innerText = "購入";
+                buyCell.appendChild(buyButton);
+            }
             // クリックイベント時の購入処理の設定
             for (let i=0; i<item_list.length; i++) {
                 // 課題4-3. ここにコードを書く
                 // 課題4-1, 4-2のコードが完成したら、以下のコメントを外す
-                //document.getElementById("button"+item_list[i].id).onclick = () => {
-                //    item_list[i].buyItem();
-                //}
+                document.getElementById("button"+item_list[i].id).onclick = () => {
+                    item_list[i].buyItem();
+                }
             }
             Item.showItemList(item_list);
 
